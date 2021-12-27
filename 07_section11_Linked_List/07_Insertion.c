@@ -5,80 +5,98 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-struct Node
+
+typedef struct node
 {
     int data;
-    struct Node *next;
-} *head = NULL;
+    struct node *next;
+} list;
 
-void create(int A[], int n)
+void linkedListTraversal(list *head)
 {
-    int i;
-    struct Node *t, *last;
-    head = (struct Node *)malloc(sizeof(struct Node));
-    head->data = A[0];
-    head->next = NULL;
-    last = head;
-
-    for (i = 1; i < n; i++)
+    list *ptr = head;
+    while (ptr != NULL)
     {
-        t = (struct Node *)malloc(sizeof(struct Node));
-        t->data = A[i];
-        t->next = NULL;
-        last->next = t;
-        last = t;
+        printf("Element: %d\n", ptr->data);
+        ptr = ptr->next;
     }
 }
 
-void Display(struct Node *p)
+list *insertAtFirst(list *head, int data)
 {
-    while (p != NULL)
+    list *ptr = (list*)malloc(sizeof(list));
+    ptr->data = data;
+    ptr->next = head;
+    head = ptr;
+    return head;
+}
+
+list *insertAtEnd(list *head, int data)
+{
+    list *ptr = (list*)malloc(sizeof(list));
+    ptr->data = data;
+    list *p = head;
+    while (p->next != NULL)
     {
-        printf("%d ", p->data);
         p = p->next;
     }
+    p->next = ptr;
+    ptr->next = NULL;
+    return head;
 }
 
-int count(struct Node *p)
-{
-    //! Recursive Approach
-    if(p==NULL)
-        return 0;
-    else
-        return count(p->next)+1;
-}
+list * insertAtIndex (list *head, int data, int index){
+    list *ptr = (list*)malloc(sizeof(list));
+    list *p = head;
+    int i = 0;
 
-void Insert(struct Node *p, int index, int x)
-{
-    struct Node *t;
-    int i;
-
-    if (index < 0 || index > count(p))
-        return;
-    t = (struct Node *)malloc(sizeof(struct Node));
-    t->data = x;
-
-    if (index == 0)
+    while (i!=index-1)
     {
-        t->next = head;
-        head = t;
+        p = p->next;
+        i++;
     }
-    else
-    {
-        for (i = 0; i < index - 1; i++)
-            p = p->next;
-        t->next = p->next;
-        p->next = t;
-    }
+    ptr->data = data;
+    ptr->next = p->next;
+    p->next = ptr;
+    return head;
 }
+
+list * insertAfterNode (list *head, int data, list *prevNode) {
+    list *ptr = (list*)malloc(sizeof(list));
+    ptr->data = data;
+    ptr->next = prevNode->next;
+    prevNode->next = ptr;
+    return head;
+}
+
 int main()
 {
+    list *head, *second, *third, *fourth;
+    head = (list*)malloc(sizeof(list));
+    second = (list*)malloc(sizeof(list));
+    third = (list*)malloc(sizeof(list));
+    fourth = (list*)malloc(sizeof(list));
 
-    int A[] = {10, 20, 30, 40, 50};
-    create(A, 5);
+    head->data = 7;
+    head->next = second;
 
-    Insert(head, 0, 5);
-    Display(head);
-    printf("\n");
+    second->data = 11;
+    second->next = third;
+
+    third->data = 41;
+    third->next = fourth;
+
+    fourth->data = 66;
+    fourth->next = NULL;
+
+    printf("Linked list before Insertion\n");
+    linkedListTraversal(head);
+    head = insertAtFirst(head, 8);
+    // head = insertAtEnd(head, 8);
+    // head = insertAtIndex(head, 8, 2);
+    // head = insertAfterNode(head, 8, second);
+    printf("Linked list after Insertion\n");
+    linkedListTraversal(head);
+
     return 0;
 }
