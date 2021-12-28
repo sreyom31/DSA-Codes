@@ -81,7 +81,7 @@ void Reverse2(struct Node *p)
     first = q;
 }
 
-void Reverse3(struct Node *q, struct Node *p)
+void Reverse3(struct Node *q, struct Node *p) //! Recursive approach
 {
     if (p)
     {
