@@ -34,6 +34,7 @@ public:
     void iterativeInorder() { iterativeInorder(root); }
     void iterativePostorder(Node* p);
     void iterativePostorder() { iterativePostorder(root); }
+    void DestroyTree(Node* p);
 };
  
 Tree::Tree() {
@@ -41,7 +42,7 @@ Tree::Tree() {
 }
  
 Tree::~Tree() {
-    // TODO
+    DestroyTree(root);
 }
  
 void Tree::CreateTree() {
@@ -200,6 +201,14 @@ void Tree::iterativePostorder(Node *p) {
         }
     }
     cout << endl;
+}
+
+void Tree::DestroyTree(Node *p) {
+    if (p != nullptr){
+        DestroyTree(p->lchild);
+        DestroyTree(p->rchild);
+        delete p;
+    }
 }
  
  
